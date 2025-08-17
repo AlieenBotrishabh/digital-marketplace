@@ -27,13 +27,11 @@ async function getData(id: string) {
   });
 }
 
-// Next.js 15 requires params to be typed as Promise
 interface ProductPageProps {
   params: Promise<{ id: string }>;
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
-  // Await the params to get the actual values
   const resolvedParams = await params;
   const { id } = resolvedParams;
   
