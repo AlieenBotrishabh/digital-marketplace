@@ -1,4 +1,3 @@
-// app/products/[category]/page.tsx
 import { ProductCard } from "@/app/components/ProductCard";
 import { prisma } from "@/app/lib/db";
 import { notFound } from "next/navigation";
@@ -39,33 +38,44 @@ async function getData(category: string) {
       smallDescription: true,
       name: true,
       price: true,
-    }
+    },
   });
 
   return data;
 }
 
-// Updated interface for Next.js 15
+// Fixed interface: params is NOT a Promise
 interface CategoryPageProps {
-  params: Promise<{ category: string }>;
+  params: { category: string };
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
-  // Await the params since it's a Promise in Next.js 15
-  const { category } = await params;
+  const { category } = params; // NO await here
   const products = await getData(category);
-  
+
   return (
     <section className="max-w-7xl mx-auto px-4 md:px-8">
       <div className="grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-2 gap-10 mt-4">
-        {products.map((product: { id: Key | null | undefined; images: string[]; price: number; name: string; smallDescription: string; }) => (
-          <ProductCard 
-                key={product.id}
-                images={product.images}
-                price={product.price}
-                name={product.name}
-                smallDescription={product.smallDescription} id={""}          />
-        ))}
+        {products.map(
+          (
+            product: {
+              id: Key;
+              images: string[];
+              price: number;
+              name: string;
+              smallDescription: string;
+            }
+          ) => (
+            <ProductCard
+              key={product.id}
+              images={product.images}
+              price={product.price}
+              name={product.name}
+              smallDescription={product.smallDescription}
+              id={product.id as string} // Pass actual id here
+            />
+          )
+        )}
       </div>
     </section>
   );
