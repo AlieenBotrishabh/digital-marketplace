@@ -2,14 +2,11 @@
 
 import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@radix-ui/react-dropdown-menu";
-
-
-import { useFormState } from "react-dom";
+import { Label } from "@/components/ui/label";
 import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
 import { State, UpdateUserSettings } from "@/app/actions";
-import { Submitbutton } from "../SubmitButton";
+import { SubmitButton } from "../SubmitButton";
 
 interface iAppProps {
     firstName : string;
@@ -40,7 +37,7 @@ export function SettingsForm({email, firstName, lastName} : iAppProps)
                     Here you will find settings regarding your account
                 </CardDescription>
             </CardHeader>
-            <CardContent className="flex flex-col gap-5-y">
+            <CardContent className="flex flex-col gap-y-5">
                 <div className="flex flex-col gap-y-2">
                     <Label>First Name</Label>
                     <Input name="firstName" type="text" defaultValue={firstName} />
@@ -53,11 +50,11 @@ export function SettingsForm({email, firstName, lastName} : iAppProps)
 
                 <div className="flex flex-col gap-y-2">
                     <Label>Email</Label>
-                    <Input name="email" type="email" disabled defaultValue="jane@gmail.com" />
+                    <Input name="email" type="email" disabled defaultValue={email} />
                 </div>
             </CardContent>
             <CardFooter>
-                <Submitbutton title="Update your Settings"></Submitbutton>
+                <SubmitButton title="Update your Settings"></SubmitButton>
             </CardFooter>
         </form>
     )

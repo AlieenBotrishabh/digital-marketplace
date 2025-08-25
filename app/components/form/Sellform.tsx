@@ -9,7 +9,7 @@ import {
   CardTitle
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@radix-ui/react-label";
+import { Label } from "@/components/ui/label";
 import { JSONContent } from "@tiptap/react";
 import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -17,16 +17,7 @@ import SelectCategory from "../SelectCategory";
 import { Textarea } from "@/components/ui/textarea";
 import { TipTapEditor } from "../Editor";
 import { UploadDropzone } from "@uploadthing/react";
-import { Submitbutton } from "../SubmitButton";
-import type { OurFileRouter } from "@/app/api/uploadthing/core"; // Import your file router type
-
-// Define proper types for upload responses
-interface UploadFileResponse {
-  url: string;
-  key: string;
-  name: string;
-  size: number;
-}
+import { SubmitButton } from "../SubmitButton";
 
 export default function Sellform() {
   const initalState: State = { message: "", status: undefined };
@@ -52,11 +43,9 @@ export default function Sellform() {
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-y-10">
-        {/* Name */}
         <div className="flex flex-col gap-y-2">
-          <Label htmlFor="product-name">Name</Label>
+          <Label>Name</Label>
           <Input
-            id="product-name"
             name="name"
             type="text"
             placeholder="Name of your Product"
@@ -68,7 +57,6 @@ export default function Sellform() {
           )}
         </div>
 
-        {/* Category */}
         <div className="flex flex-col gap-y-2">
           <Label>Category</Label>
           <SelectCategory />
@@ -77,11 +65,9 @@ export default function Sellform() {
           )}
         </div>
 
-        {/* Price */}
         <div className="flex flex-col gap-y-2">
-          <Label htmlFor="product-price">Price</Label>
+          <Label>Price</Label>
           <Input
-            id="product-price"
             placeholder="29$"
             type="number"
             name="price"
@@ -93,11 +79,9 @@ export default function Sellform() {
           )}
         </div>
 
-        {/* Small summary */}
         <div className="flex flex-col gap-y-2">
-          <Label htmlFor="small-summary">Small Summary</Label>
+          <Label>Small Summary</Label>
           <Textarea
-            id="small-summary"
             name="smallDescription"
             placeholder="Please describe your product shortly right here..."
             required
@@ -110,7 +94,6 @@ export default function Sellform() {
           )}
         </div>
 
-        {/* Rich Description */}
         <div className="flex flex-col gap-y-2">
           <input
             type="hidden"
@@ -124,13 +107,12 @@ export default function Sellform() {
           )}
         </div>
 
-        {/* Product Images Upload */}
         <div className="flex flex-col gap-y-2">
           <input type="hidden" name="images" value={JSON.stringify(images)} />
           <Label>Product Images</Label>
-          <UploadDropzone<OurFileRouter, "imageUploader">
+          <UploadDropzone
             endpoint="imageUploader"
-            onClientUploadComplete={(res: UploadFileResponse[]) => {
+            onClientUploadComplete={(res) => {
               setImages(res.map((item) => item.url));
               toast.success("Your images have been uploaded");
             }}
@@ -143,13 +125,12 @@ export default function Sellform() {
           )}
         </div>
 
-        {/* Product File Upload */}
         <div className="flex flex-col gap-y-2">
           <input type="hidden" name="productFile" value={productFile ?? ""} />
           <Label>Product File</Label>
-          <UploadDropzone<OurFileRouter, "productFileUpload">
+          <UploadDropzone
             endpoint="productFileUpload"
-            onClientUploadComplete={(res: UploadFileResponse[]) => {
+            onClientUploadComplete={(res) => {
               if (res && res.length > 0) {
                 const fileUrl = res[0].url;
                 setProductFile(fileUrl);
@@ -166,22 +147,12 @@ export default function Sellform() {
             <p className="text-red-500">{state.errors["productFile"][0]}</p>
           )}
           {productFile && (
-            <p className="text-sm text-green-600">
-              File uploaded successfully!
-              <a
-                href={productFile}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="ml-2 underline text-blue-600"
-              >
-                Preview
-              </a>
-            </p>
+            <p className="text-sm text-green-600">File uploaded successfully!</p>
           )}
         </div>
       </CardContent>
       <CardFooter className="mt-5 mb-14">
-        <Submitbutton title="Create your Product" />
+        <SubmitButton title="Create your Product" />
       </CardFooter>
     </form>
   );

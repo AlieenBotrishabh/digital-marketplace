@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { prisma } from "../lib/db"
 import { ProductCard } from "./ProductCard";
-import { Key } from "react";
 
 async function getData()
 {
@@ -38,8 +37,8 @@ export async function NewestProduct()
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-2 mt-4 gap-10">
-                {data.map((product: { images: string[]; id: Key | null | undefined; name: string; price: number; smallDescription: string; }) => (
-                    <ProductCard images={product.images} key={product.id} name={product.name} price={product.price} smallDescription={product.smallDescription} id={""} />
+                {data.map((product) => (
+                    <ProductCard images={product.images} key={product.id} id={product.id} name={product.name} price={product.price} smallDescription={product.smallDescription} />
                 ))}
             </div>
         </section>
