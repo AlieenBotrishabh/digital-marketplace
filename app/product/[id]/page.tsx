@@ -34,7 +34,7 @@ async function getData(id : string)
 export default async function ProductPage({params} : {params : {id : string}})
 {
 
-    const { id } = await params;
+    const { id } = params;
     const data = await getData(id);
 
     return (
